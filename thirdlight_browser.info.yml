@@ -1,0 +1,13 @@
+name: Thirdlight Browser
+description: CKEditor plugin to allow insertion of images from a Third Light IMS site.
+package: Content authoring
+
+type: module
+core: 8.x
+
+dependencies:
+  - ckeditor
+
+configure: thirdlight_browser.config
+
+hidden: false

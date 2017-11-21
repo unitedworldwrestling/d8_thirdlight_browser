@@ -1,0 +1,19 @@
+#
+# Links are things that are added to the existing
+# pages. They point to routes, which are associated
+# with a controller to output content and a URL.
+#
+
+#
+# Add link under 'Manage -> Configuration -> Content Authoring'
+# To go to our view config route.
+#
+# See the routes named in core/modules/system/system.links.menu.yml
+# for a list of potential parents to put our link under.
+#
+thirdlight_browser.config:
+  title: 'Third Light Browser'
+  parent: system.admin_config_content
+  description: 'Configure the Third Light Browser.'
+  route_name: thirdlight_browser.config
+

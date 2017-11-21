@@ -1,0 +1,80 @@
+<?php
+
+// the help text needs this:
+use Drupal\Core\Routing\RouteMatchInterface;
+
+// use this to generate link urls:
+use Drupal\Core\Url;
+
+//
+// This hook provided help boxes at the top of pages whose routes match those we have
+// added help text for.
+//
+function thirdlight_browser_help($route_name, RouteMatchInterface $route_match) {
+
+  switch ($route_name) {
+
+    // help for the general configuration page (entry point to config lark):
+    case 'thirdlight_browser.config':
+      return
+          '<div style="padding:10px;border:1px solid #BEBFB9;margin-bottom:10px;"><p>' .
+          t('The Third Light Browser module provides a plugin to the CKEditor, allowing the insertion of files from a Third Light IMS site.') .
+          '</p><p>' .
+          t('As a minimum, it is necessary to specify the Third Light site to use.') .
+          '</p></div>';
+
+    // help for the output format adding/editing pages:
+    case 'thirdlight_browser.config.outputformats.add':
+      return t('Add a new output format to be presented when inserting a file from Third Light.');
+
+    case 'thirdlight_browser.config.outputformats.edit':
+      return t('Edit an output format.');
+
+    // help for the global settings editing page:
+    case 'thirdlight_browser.config.globalsettings':
+      return '<p>' . t('These settings control where files are loaded from, and the appearance of the Third Light browser.') . '</p>';
+
+
+    // If we go to "help", we'll find an entry for this plugin which is the below:
+    case 'help.page.thirdlight_browser':
+
+      $adminPath = \Drupal::url('thirdlight_browser.config');
+      $textEditorsPath = \Drupal::url('filter.admin_overview');
+      $tlDocs = 'https://3rd.lt/drupl';
+
+      return
+          '<h3>' . t('Introduction') . '</h3>' .
+          '<p>' .
+          t('The Third Light Browser module provides a plugin to the CKEditor, allowing the insertion of files from a Third Light IMS site.') .
+          '</p>' .
+          '<h4>' . t('Configuration') . '</h4>' .
+          '<ol>' .
+          '<li>' .
+          t('Global settings and output formats can be configured in the <strong><a href=":adminpath">Third Light Browser</a></strong> section.'
+          , [ ':adminpath' => $adminPath ]
+          ) .
+          '</li>' .
+          '<li>' .
+          t('To enable the plugin, you need to edit the CKEditor profiles at <br/><strong><a href=":textEditorsPath">Text formats and editors</a></strong><br/>. Plugins are enabled and added to the toolbar in the "Editor Appearance" section of the profile edit page.'
+          , [ ':textEditorsPath' => $textEditorsPath ]
+          ) .
+          '</li>' .
+          '<li>' .
+          t('Ensure that &lt;img&gt; is allowed in your output formats, at <strong><a href=":textEditorsPath">Text formats and editors</a></strong>'
+          , [ ':textEditorsPath'=> $textEditorsPath ]
+          ) .
+          '</li>' .
+          '</ol>' .
+          '<h3>'.t('Third Light Documentation').'</h3><p>'.
+          t('The Third Light Browser and related Third Light IMS site settings documentation can be found in the <a href=":docs">Third Light Docs</a>.'
+          , [ ":docs" => $tlDocs ]
+          ) .
+          "</p>";
+
+  }
+
+  // if we get here, we didn't find help for the route
+  // so return nothing.
+  return '';
+}
+

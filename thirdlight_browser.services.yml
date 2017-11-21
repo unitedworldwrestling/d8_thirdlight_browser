@@ -1,0 +1,24 @@
+#
+# Services are pointers to PHP classes which can be injected into other
+# classes' constructor functions or obtained through \Drupal::service('name').
+#
+services:
+  #
+  # Define our Store service, which has functions to get and set config and
+  # output format stuff from the DB.
+  #
+  thirdlight_browser.store:
+    class: 'Drupal\thirdlight_browser\Service\Store'
+    arguments: ['@database']
+
+  #
+  # Random bits that are needed in several places but have no real home.
+  #
+  thirdlight_browser.misc:
+    class: 'Drupal\thirdlight_browser\Service\Misc'
+
+  #
+  # A service wrapper for our imsapiclient, so that we can inject it.
+  #
+  thirdlight_browser.api:
+    class: 'Drupal\thirdlight_browser\Service\Api'

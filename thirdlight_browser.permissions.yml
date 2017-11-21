@@ -1,0 +1,15 @@
+#
+# Make up some permissions that we can then apply to our routes
+# to restrict access. These will automatically show up in the
+# permissions menu of Drupal.
+#
+# "restrict access" just shows an additional warning.
+#
+administer thirdlight_browser:
+ title: 'Administer Third Light browser'
+ description: 'Allow users to change Third Light browser settings.'
+ restrict access: true
+
+use thirdlight_browser:
+  title: 'Use Third Light browser'
+  description: 'Allow users to use the Third Light browser.'

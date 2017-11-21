@@ -1,0 +1,74 @@
+#
+# Routes define mappings between some state name
+# (eg thirdlight_browser.config), a URL that is
+# associated with that state, and some reference to
+# code to fire off to generate our view.
+#
+# state names are used elsewhere to reference the routes,
+# eg when defining links to them in the drupal menu structure.
+#
+# the _controller/_form syntax denotes what will be handling the
+# route (some method in a controller, or a form controller and its
+# methods). the code lives under:
+#
+# thirdlight_browser/src/{Form|Controller}/{name}.php[::methodToCall()]
+#
+
+#
+# This is the entry point to our configuration page.
+# It displays the configuration and provides links
+# to edit it.
+#
+thirdlight_browser.config:
+  path: '/admin/config/content/thirdlight_browser'
+  defaults:
+    _controller: '\Drupal\thirdlight_browser\Controller\Config::configPage'
+    _title: 'Third Light Browser'
+  requirements:
+    _permission: 'administer thirdlight_browser'
+
+#
+# This route takes us to a Form controller
+# which handles editing the global configuration
+#
+thirdlight_browser.config.globalsettings:
+  path: '/admin/config/content/thirdlight_browser/global_settings'
+  defaults:
+    _form:  '\Drupal\thirdlight_browser\Form\GlobalConfig'
+    _title: 'Third Light Browser: Global Configuration'
+  requirements:
+    _permission: 'administer thirdlight_browser'
+
+#
+# These routes are for working with output formats.
+#
+# Our Edit and Add routes just exist so we can pass a param in to
+# the form controller so that it knows what to do. They are both
+# identical to eachother other than the title.
+#
+# Our delete route just performs the delete and redirects back to
+# the main page, so it will hardly be visible.
+#
+thirdlight_browser.config.outputformats.edit:
+  path: '/admin/config/content/thirdlight_browser/output_formats/edit/{name}'
+  defaults:
+    _form:  '\Drupal\thirdlight_browser\Form\OutputFormats'
+    _title: 'Edit Output Format'
+  requirements:
+    _permission: 'administer thirdlight_browser'
+
+thirdlight_browser.config.outputformats.add:
+  path: '/admin/config/content/thirdlight_browser/output_formats/add'
+  defaults:
+    _form:  '\Drupal\thirdlight_browser\Form\OutputFormats'
+    _title: 'Add Output Format'
+  requirements:
+    _permission: 'administer thirdlight_browser'
+
+thirdlight_browser.config.outputformats.delete:
+  path: '/admin/config/content/thirdlight_browser/output_formats/delete/{name}'
+  defaults:
+    _controller:  '\Drupal\thirdlight_browser\Controller\DeleteOutputFormat::delete'
+    _title: 'Delete Output Format'
+  requirements:
+    _permission: 'administer thirdlight_browser'

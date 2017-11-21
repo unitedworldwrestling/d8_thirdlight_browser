@@ -1,0 +1,113 @@
+<?php
+/*
+ * This file implements hooks that Drupal looks for and makes use of.
+ * The hooks here add the relevant DB stuff and allow requirements
+ * checking.
+ *
+ */
+
+
+/**
+ * Implementation of hook_install().
+ */
+function thirdlight_browser_install() {
+    db_insert('thirdlight_browser_config')->fields(array("parameter"=>"url","value"=>""))->execute();
+    db_insert('thirdlight_browser_config')->fields(array("parameter"=>"theme","value"=>"light"))->execute();
+    db_insert('thirdlight_browser_config')->fields(array("parameter"=>"revisions","value"=>""))->execute();
+    db_insert('thirdlight_browser_config')->fields(array("parameter"=>"metadata","value"=>""))->execute();
+
+    db_insert('thirdlight_browser_variants')->fields(array("name"=>"Landscape","width"=>200,"height"=>150,"format"=>"JPG"))->execute();
+    db_insert('thirdlight_browser_variants')->fields(array("name"=>"Portrait","width"=>150,"height"=>200,"format"=>"JPG"))->execute();
+    db_insert('thirdlight_browser_variants')->fields(array("name"=>"Banner","width"=>400,"height"=>75,"format"=>"JPG"))->execute();
+}
+
+function thirdlight_browser_requirements($phase) {
+    $requirements = array();
+
+    $requirements['curl'] = array(
+        'title' => t('cURL extension'),
+        'value' => t('Enabled'),
+        'severity' => REQUIREMENT_OK
+    );
+    if(!function_exists("curl_init"))
+    {
+        $requirements['curl']['value'] = t('Missing');
+        if($phase == 'runtime')
+        {
+            $requirements['curl']['severity'] = REQUIREMENT_WARNING;
+        }
+        else
+        {
+            $requirements['curl']['severity'] = REQUIREMENT_INFO;
+        }
+        $requirements['curl']['description'] = t('The Third Light Browser module uses cURL for API access to Third Light IMS. This enables additional options for authentication and metadata.');
+    }
+
+    return $requirements;
+}
+
+/**
+ * Implementation of hook_schema().
+ */
+function thirdlight_browser_schema() {
+    $schema = array();
+    $schema['thirdlight_browser_config'] = array(
+        'description' => 'Stores Third Light browser configuration parameters',
+        'fields' => array(
+            'parameter' => array(
+                'type' => 'varchar',
+                'not null' => TRUE,
+                'default' => '',
+                'length' => 64,
+                'description' => 'Parameter identifier',
+            ),
+            'value' => array(
+                'type' => 'varchar',
+                'not null' => TRUE,
+                'default' => '',
+                'length' => 255,
+                'description' => 'Parameter value',
+            ),
+        ),
+        'primary key' => array('parameter')
+    );
+    $schema['thirdlight_browser_variants'] = array(
+        'description' => 'Stores Third Light browser output formats',
+        'fields' => array(
+            'name' => array(
+                'type' => 'varchar',
+                'not null' => TRUE,
+                'default' => '',
+                'length' => 128,
+                'description' => 'Variant name',
+            ),
+            'width' => array(
+                'type' => 'int',
+                'not null' => false,
+                'default' => null,
+                'description' => 'Width in pixels (or null for freeform)',
+            ),
+            'height' => array(
+                'type' => 'int',
+                'not null' => false,
+                'default' => null,
+                'description' => 'Height in pixels (or null for freeform)',
+            ),
+            'format' => array(
+                'type' => 'varchar',
+                'default' => '',
+                'length' => 32,
+                'description' => 'File format identifier',
+            ),
+            'className' => array(
+                'type' => 'varchar',
+                'default' => '',
+                'length' => 128,
+                'description' => 'Class to add to the inserted image',
+            ),
+        ),
+        'primary key' => array('name')
+    );
+
+    return $schema;
+}
