@@ -60,12 +60,13 @@ CKEDITOR.plugins.add('thirdlight_browser', {
                     img.setAttribute('src', cropDetails.urlDetails.url);
                     img.setAttribute('width', cropDetails.urlDetails.width);
                     img.setAttribute('height', cropDetails.urlDetails.height);
+                    img.setAttribute('class', 'img-responsive'); // Workaround
 
                     if(cropDetails.cropClass && thirdlightConfig.options.cropClasses) {
                         forEach(thirdlightConfig.options.cropClasses, function(curClass) {
                             if(curClass.key == cropDetails.cropClass) {
                                 if(curClass.className) {
-                                    img.setAttribute("class", curClass.className);
+                                    img.setAttribute("class", curClass.className); // Not working
                                 }
                                 return false;
                             }
